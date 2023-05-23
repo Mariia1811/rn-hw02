@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   ImageBackground,
@@ -28,6 +28,17 @@ const RegistrationScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
+
+  useEffect(() => {
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setIsShowKeyboard(false);
+    });
+
+    return () => {
+      hideSubscription.remove();
+    };
+  }, []);
+
   const addImg = () => {};
   const delImg = () => {
     setAvatar(null);
@@ -45,6 +56,12 @@ const RegistrationScreen = () => {
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
+  };
+
+  const handleSubmit = () => {
+    keyboardHide();
+    console.log(state);
+    setstate(initialState);
   };
 
   return (
@@ -126,7 +143,11 @@ const RegistrationScreen = () => {
             </View>
             {!isShowKeyboard ? (
               <>
-                <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.btn}
+                  onPress={handleSubmit}
+                >
                   <Text style={styles.btnTitle}>Зарегистрироваться</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} style={styles.navButton}>
