@@ -10,13 +10,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { View } from "react-native";
-import { useRoute } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
 
-function Home() {
-  const route = useRoute();
-  console.log(route);
+function Home({ navigation }) {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -82,6 +79,7 @@ function Home() {
         name="CreatePostsScreen"
         component={CreatePostsScreen}
         options={{
+          tabBarStyle: { display: "none" },
           title: "Створити публікацію",
           tabBarIcon: ({ focused }) =>
             focused ? (
