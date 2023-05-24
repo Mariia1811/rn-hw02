@@ -22,7 +22,7 @@ const initialState = {
   password: "",
 };
 
-const RegistrationScreen = () => {
+const RegistrationScreen = ({ navigation }) => {
   const [avatar, setAvatar] = useState(null);
   const [state, setstate] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
@@ -62,6 +62,7 @@ const RegistrationScreen = () => {
     keyboardHide();
     console.log(state);
     setstate(initialState);
+    navigation.navigate("Home");
   };
 
   return (
@@ -89,14 +90,14 @@ const RegistrationScreen = () => {
                 </TouchableOpacity>
               )}
             </View>
-            <Text style={styles.text}>Регистрация</Text>
+            <Text style={styles.text}>Реєстрація</Text>
             <TextInput
               style={{
                 ...styles.input,
                 borderColor: focusedInput === "input1" ? "#FF6C00" : "#E8E8E8",
               }}
               textAlign={"left"}
-              placeholder="Логин"
+              placeholder="Логін"
               value={state.login}
               onFocus={() => handleFocus("input1")}
               onChangeText={(value) =>
@@ -109,7 +110,7 @@ const RegistrationScreen = () => {
                 borderColor: focusedInput === "input2" ? "#FF6C00" : "#E8E8E8",
               }}
               textAlign={"left"}
-              placeholder="Адрес электронной почты"
+              placeholder="Адреса електронної пошти"
               value={state.email}
               onFocus={() => handleFocus("input2")}
               onChangeText={(value) =>
@@ -148,11 +149,14 @@ const RegistrationScreen = () => {
                   style={styles.btn}
                   onPress={handleSubmit}
                 >
-                  <Text style={styles.btnTitle}>Зарегистрироваться</Text>
+                  <Text style={styles.btnTitle}>Увійти</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} style={styles.navButton}>
                   <Text style={styles.navButtonTitle}>
-                    Уже есть аккаунт? Войти
+                    Вже є акаунт?
+                    <Text onPress={() => navigation.navigate("LoginScreen")}>
+                      Увійти
+                    </Text>
                   </Text>
                 </TouchableOpacity>
               </>

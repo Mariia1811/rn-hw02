@@ -17,7 +17,7 @@ const initialState = {
   password: "",
 };
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [state, setstate] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -51,6 +51,7 @@ const LoginScreen = () => {
     keyboardHide();
     console.log(state);
     setstate(initialState);
+    navigation.navigate("Home");
   };
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
@@ -65,14 +66,14 @@ const LoginScreen = () => {
             }}
             onPress={keyboardHide}
           >
-            <Text style={styles.text}>Войти</Text>
+            <Text style={styles.text}>Увійти</Text>
             <TextInput
               style={{
                 ...styles.input,
                 borderColor: focusedInput === "input1" ? "#FF6C00" : "#E8E8E8",
               }}
               textAlign={"left"}
-              placeholder="Адрес электронной почты"
+              placeholder="Адреса електронної пошти"
               value={state.email}
               onFocus={() => handleFocus("input1")}
               onChangeText={(value) =>
@@ -111,11 +112,16 @@ const LoginScreen = () => {
                   style={styles.btn}
                   onPress={handleSubmit}
                 >
-                  <Text style={styles.btnTitle}>Войти</Text>
+                  <Text style={styles.btnTitle}>Увійти</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} style={styles.navButton}>
                   <Text style={styles.navButtonTitle}>
-                    Уже есть аккаунт? Войти
+                    Ще нема акаунту?{" "}
+                    <Text
+                      onPress={() => navigation.navigate("RegistrationScreen")}
+                    >
+                      Зареєструватися
+                    </Text>
                   </Text>
                 </TouchableOpacity>
               </>
