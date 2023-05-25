@@ -1,35 +1,21 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useRoute } from "@react-navigation/native";
 
-export const MapScreen = () => {
-  const {
-    params: { currentLocation },
-  } = useRoute();
+function MapScreen() {
+  const { params } = useRoute();
 
   return (
     <MapView
-      style={styles.mapStyle}
+      style={{ flex: 1 }}
       region={{
-        ...currentLocation,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        ...params.location,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
       }}
       showsUserLocation={true}
     >
-      {/* {currentLocation && (
-        <Marker
-          title="I am here"
-          coordinate={currentLocation}
-          description="Hello"
-        />
-      )} */}
+      {params && <Marker title={params.name} coordinate={params.location} />}
     </MapView>
   );
-};
-
-const styles = StyleSheet.create({
-  mapStyle: {
-    flex: 1,
-  },
-});
+}
+export default MapScreen;

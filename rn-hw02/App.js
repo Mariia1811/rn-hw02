@@ -11,6 +11,8 @@ import Home from "./Screens/Home";
 import MapScreen from "./Screens/MapScreen";
 import CommentsScreen from "./Screens/CommentsScreen";
 
+import { AntDesign } from "@expo/vector-icons";
+
 const MainStack = createStackNavigator();
 
 export default function App() {
@@ -54,6 +56,15 @@ export default function App() {
           component={CommentsScreen}
           options={{
             title: "Коментарі",
+            headerLeft: () => (
+              <AntDesign
+                name="arrowleft"
+                size={24}
+                color="rgba(33, 33, 33, 0.8)"
+                style={{ paddingLeft: 20 }}
+                onPress={() => navigation.navigate("PostsScreen")}
+              />
+            ),
           }}
         />
         <MainStack.Screen
@@ -61,6 +72,15 @@ export default function App() {
           component={MapScreen}
           options={{
             title: "Карта",
+            headerLeft: () => (
+              <AntDesign
+                name="arrowleft"
+                size={24}
+                color="rgba(33, 33, 33, 0.8)"
+                style={{ paddingLeft: 20 }}
+                onPress={() => navigation.navigate("PostsScreen")}
+              />
+            ),
           }}
         />
       </MainStack.Navigator>

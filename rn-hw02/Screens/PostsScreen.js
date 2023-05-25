@@ -53,7 +53,7 @@ function PostsScreen({ route, navigation }) {
                   <TouchableOpacity
                     style={styles.overlayIcons}
                     onPress={() =>
-                      navigation.navigate("MapScreen", route.params.location)
+                      navigation.navigate("MapScreen", route.params)
                     }
                   >
                     <Ionicons

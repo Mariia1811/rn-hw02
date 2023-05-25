@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Camera } from "expo-camera";
+import * as Location from "expo-location";
 import {
   Image,
   ScrollView,
@@ -8,8 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Camera } from "expo-camera";
-import * as Location from "expo-location";
 
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -34,18 +34,18 @@ function CreatePostsScreen({ navigation }) {
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
     setPhoto(photo.uri);
+
     if (Platform.OS !== "web") {
       const { status } = await Location.requestForegroundPermissionsAsync();
 
       if (status !== "granted") {
-        Alert.alert(
-          "Insufficient permissions!",
-          "Sorry, we need location permissions to make this work!",
-          [{ text: "Okay" }]
-        );
+        Alert.alert("Sorry, we need location permissions to make this work!", [
+          { text: "Okay" },
+        ]);
         return;
       }
     }
+
     let point = await Location.getCurrentPositionAsync({});
     const coords = {
       latitude: point.coords.latitude,
@@ -53,6 +53,7 @@ function CreatePostsScreen({ navigation }) {
     };
     setLocation(coords);
   };
+
   const openCamera = () => {
     setIsCameraOpen((pS) => !pS);
   };
@@ -61,11 +62,13 @@ function CreatePostsScreen({ navigation }) {
     navigation.navigate("PostsScreen", { photo, location, ...data });
     handleDelete();
   };
+
   const handleDelete = () => {
     setData(initialState);
     setIsCameraOpen(false);
     setPhoto(null);
   };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -145,10 +148,10 @@ function CreatePostsScreen({ navigation }) {
             <Text style={styles.btnTitle}>Опубліковати</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.delateBtn} onPress={handleDelete}>
-          <AntDesign name="delete" size={(24, 14)} color="#BDBDBD" />
-        </TouchableOpacity>
       </ScrollView>
+      <TouchableOpacity style={styles.delateBtn} onPress={handleDelete}>
+        <AntDesign name="delete" size={(24, 14)} color="#BDBDBD" />
+      </TouchableOpacity>
     </View>
   );
 }
