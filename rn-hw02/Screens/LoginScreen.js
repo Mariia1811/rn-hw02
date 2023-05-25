@@ -116,7 +116,7 @@ const LoginScreen = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} style={styles.navButton}>
                   <Text style={styles.navButtonTitle}>
-                    Ще нема акаунту?{" "}
+                    Ще нема акаунту?
                     <Text
                       onPress={() => navigation.navigate("RegistrationScreen")}
                     >

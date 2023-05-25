@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import PostsScreen from "../Screens/PostsScreen";
-import CreatePostsScreen from "../Screens/CreatePostsScreen";
-import ProfileScreen from "../Screens/ProfileScreen";
+import PostsScreen from "./PostsScreen";
+import CreatePostsScreen from "./CreatePostsScreen";
+import ProfileScreen from "./ProfileScreen";
 
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";

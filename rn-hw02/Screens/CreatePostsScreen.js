@@ -1,7 +1,228 @@
-import { Text } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Camera } from "expo-camera";
+import * as Location from "expo-location";
 
-function CreatePostsScreen() {
-  return <Text>CreatePostsScreen</Text>;
+import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+
+const initialState = {
+  name: "",
+  locationTitle: "",
+};
+
+function CreatePostsScreen({ navigation }) {
+  const [data, setData] = useState(initialState);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [camera, setCamera] = useState(null);
+  const [photo, setPhoto] = useState(null);
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    setIsCameraOpen(true);
+  }, []);
+
+  const takePhoto = async () => {
+    const photo = await camera.takePictureAsync();
+    setPhoto(photo.uri);
+    if (Platform.OS !== "web") {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        Alert.alert(
+          "Insufficient permissions!",
+          "Sorry, we need location permissions to make this work!",
+          [{ text: "Okay" }]
+        );
+        return;
+      }
+    }
+    let point = await Location.getCurrentPositionAsync({});
+    const coords = {
+      latitude: point.coords.latitude,
+      longitude: point.coords.longitude,
+    };
+    setLocation(coords);
+  };
+  const openCamera = () => {
+    setIsCameraOpen((pS) => !pS);
+  };
+
+  const handleSubmit = () => {
+    navigation.navigate("PostsScreen", { photo, location, ...data });
+    handleDelete();
+  };
+  const handleDelete = () => {
+    setData(initialState);
+    setIsCameraOpen(false);
+    setPhoto(null);
+  };
+  return (
+    <View style={styles.container}>
+      <ScrollView>
+        <View>
+          {!isCameraOpen ? (
+            <View style={styles.wrapGray}>
+              <TouchableOpacity
+                onPress={openCamera}
+                style={styles.btnContainer}
+              >
+                <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.wrapCamera}>
+              <Camera style={styles.camera} ref={setCamera}>
+                {photo ? (
+                  <View>
+                    <Image source={{ uri: photo }} style={{ height: 240 }} />
+                  </View>
+                ) : null}
+
+                <TouchableOpacity
+                  onPress={takePhoto}
+                  style={styles.btnContainer}
+                >
+                  <MaterialIcons
+                    name="photo-camera"
+                    size={24}
+                    color="#FFFFFF"
+                  />
+                </TouchableOpacity>
+              </Camera>
+            </View>
+          )}
+          <TextInput
+            style={styles.input}
+            textAlign={"left"}
+            placeholder="Назва..."
+            value={data.name}
+            onFocus={() => {}}
+            onChangeText={(value) =>
+              setData((prevState) => ({ ...prevState, name: value }))
+            }
+          />
+          <View style={{ position: "relative" }}>
+            <Ionicons
+              name="md-location-outline"
+              style={{ position: "absolute", left: 0, bottom: 16 }}
+              size={18}
+              color="#BDBDBD"
+            />
+            <TextInput
+              style={{ ...styles.input, paddingLeft: 25, marginTop: 16 }}
+              textAlign={"left"}
+              placeholder="Місцевість..."
+              value={data.locationTitle}
+              onFocus={() => {}}
+              onChangeText={(value) =>
+                setData((prevState) => ({ ...prevState, locationTitle: value }))
+              }
+            />
+          </View>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={
+              photo
+                ? { ...styles.btn }
+                : {
+                    ...styles.btn,
+                    backgroundColor: "#F6F6F6",
+                    color: "#BDBDBD",
+                  }
+            }
+            onPress={handleSubmit}
+          >
+            <Text style={styles.btnTitle}>Опубліковати</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.delateBtn} onPress={handleDelete}>
+          <AntDesign name="delete" size={(24, 14)} color="#BDBDBD" />
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
+  );
 }
 
 export default CreatePostsScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 20,
+    paddingTop: 32,
+    paddingBottom: 22,
+  },
+  wrapGray: {
+    height: 240,
+    justifyContent: "center",
+    backgroundColor: "#F6F6F6",
+    borderWidth: 1,
+    borderColor: "#E8E8E8",
+  },
+  wrapCamera: {
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  btnContainer: {
+    position: "absolute",
+    left: "42%",
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
+    width: 60,
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 100,
+    zIndex: 100,
+  },
+  camera: {
+    justifyContent: "center",
+    height: 240,
+  },
+  input: {
+    marginTop: 48,
+    borderBottomWidth: 1,
+    borderColor: "#E8E8E8",
+    height: 50,
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    color: "#212121",
+  },
+  btn: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 32,
+    padding: 16,
+    minWidth: "100%",
+    borderRadius: 100,
+    backgroundColor: "#FF6C00",
+  },
+  btnTitle: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    color: "#FFFFFF",
+  },
+  delateBtn: {
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 70,
+    height: 40,
+    paddingHorizontal: 23,
+    paddingVertical: 8,
+    marginTop: 8,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 20,
+  },
+});
