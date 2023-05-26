@@ -23,8 +23,7 @@ const initialState = {
   email: "",
   password: "",
 };
-
-const RegistrationScreen = ({ navigation }) => {
+function RegistrationScreen({ navigation }) {
   const [avatar, setAvatar] = useState(null);
   const [state, setstate] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
@@ -170,7 +169,7 @@ const RegistrationScreen = ({ navigation }) => {
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
-};
+}
 
 export default RegistrationScreen;
 
