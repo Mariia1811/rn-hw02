@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   ImageBackground,
@@ -13,6 +14,7 @@ import {
   TouchableWithoutFeedback,
   Pressable,
 } from "react-native";
+import { registerThunk } from "../redux/auth/authOperations";
 
 import { AntDesign } from "@expo/vector-icons";
 
@@ -28,6 +30,8 @@ const RegistrationScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
@@ -60,7 +64,7 @@ const RegistrationScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     keyboardHide();
-    console.log(state);
+    dispatch(registerThunk(state));
     setstate(initialState);
     navigation.navigate("Home");
   };

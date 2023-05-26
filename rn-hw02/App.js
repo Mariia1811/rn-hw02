@@ -1,4 +1,7 @@
 import "react-native-gesture-handler";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./redux/store";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -28,62 +31,66 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <MainStack.Navigator initialRouteName="LoginScreen">
-        <MainStack.Screen
-          name="RegistrationScreen"
-          component={RegistrationScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <MainStack.Screen
-          name="LoginScreen"
-          component={LoginScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <MainStack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <MainStack.Screen
-          name="CommentsScreen"
-          component={CommentsScreen}
-          options={{
-            title: "Коментарі",
-            headerLeft: () => (
-              <AntDesign
-                name="arrowleft"
-                size={24}
-                color="rgba(33, 33, 33, 0.8)"
-                style={{ paddingLeft: 20 }}
-                onPress={() => navigation.navigate("PostsScreen")}
-              />
-            ),
-          }}
-        />
-        <MainStack.Screen
-          name="MapScreen"
-          component={MapScreen}
-          options={{
-            title: "Карта",
-            headerLeft: () => (
-              <AntDesign
-                name="arrowleft"
-                size={24}
-                color="rgba(33, 33, 33, 0.8)"
-                style={{ paddingLeft: 20 }}
-                onPress={() => navigation.navigate("PostsScreen")}
-              />
-            ),
-          }}
-        />
-      </MainStack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <NavigationContainer>
+          <MainStack.Navigator initialRouteName="LoginScreen">
+            <MainStack.Screen
+              name="RegistrationScreen"
+              component={RegistrationScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <MainStack.Screen
+              name="LoginScreen"
+              component={LoginScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <MainStack.Screen
+              name="Home"
+              component={Home}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <MainStack.Screen
+              name="CommentsScreen"
+              component={CommentsScreen}
+              options={({ navigation }) => ({
+                title: "Коментарі",
+                headerLeft: () => (
+                  <AntDesign
+                    name="arrowleft"
+                    size={24}
+                    color="rgba(33, 33, 33, 0.8)"
+                    style={{ paddingLeft: 20 }}
+                    onPress={() => navigation.navigate("Home")}
+                  />
+                ),
+              })}
+            />
+            <MainStack.Screen
+              name="MapScreen"
+              component={MapScreen}
+              options={({ navigation }) => ({
+                title: "Карта",
+                headerLeft: () => (
+                  <AntDesign
+                    name="arrowleft"
+                    size={24}
+                    color="rgba(33, 33, 33, 0.8)"
+                    style={{ paddingLeft: 20 }}
+                    onPress={() => navigation.navigate("Home")}
+                  />
+                ),
+              })}
+            />
+          </MainStack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }

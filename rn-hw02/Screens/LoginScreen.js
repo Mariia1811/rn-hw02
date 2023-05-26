@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   ImageBackground,
@@ -11,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   Pressable,
 } from "react-native";
+import { loginThunk } from "../redux/auth/authOperations";
 
 const initialState = {
   email: "",
@@ -22,6 +24,8 @@ const LoginScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
@@ -49,7 +53,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     keyboardHide();
-    console.log(state);
+    dispatch(loginThunk(state));
     setstate(initialState);
     navigation.navigate("Home");
   };
