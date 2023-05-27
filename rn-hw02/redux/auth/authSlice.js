@@ -5,7 +5,6 @@ import {
   loginThunk,
   registerThunk,
 } from "./authOperations";
-import { current } from "@reduxjs/toolkit";
 
 const initialState = {
   login: null,

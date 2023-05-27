@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Camera } from "expo-camera";
 import * as Location from "expo-location";
 import {
@@ -10,6 +11,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
+import { storage, db } from "../firebase/config.js";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { setDoc, doc } from "firebase/firestore";
 
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -26,6 +31,8 @@ function CreatePostsScreen({ navigation }) {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [location, setLocation] = useState(null);
+
+  const { login, userId } = useSelector((state) => state.auth);
 
   useEffect(() => {
     setIsCameraOpen(true);
@@ -58,8 +65,37 @@ function CreatePostsScreen({ navigation }) {
     setIsCameraOpen((pS) => !pS);
   };
 
-  const handleSubmit = () => {
-    navigation.navigate("PostsScreen", { photo, location, ...data });
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    await setDoc(doc(db, "myPosts", "MK"), {
+      photo,
+      data,
+      location,
+      userId,
+      login,
+    });
+  };
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const uniquePostId = Date.now().toString();
+    const postsRef = ref(storage, `postImage/${uniquePostId}`);
+    const metadata = {
+      contentType: "image/jpg",
+    };
+
+    await uploadBytes(postsRef, file, metadata);
+    const processedPhoto = await getDownloadURL(
+      ref(storage, `postImage/${uniquePostId}`)
+    );
+
+    return processedPhoto;
+  };
+
+  const handleSubmit = async () => {
+    navigation.navigate("PostsScreen");
+    await uploadPostToServer();
     handleDelete();
   };
 

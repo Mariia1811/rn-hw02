@@ -26,7 +26,7 @@ function MainRoute() {
 
   return (
     <NavigationContainer>
-      {!state ? (
+      {state ? (
         <MainStack.Navigator>
           <MainStack.Screen
             name="RegistrationScreen"

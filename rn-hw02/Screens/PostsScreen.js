@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../firebase/config.js";
+
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -15,10 +18,10 @@ function PostsScreen({ route, navigation }) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
+    const unsub = onSnapshot(doc(db, "myPosts", "MK"), (doc) => {
+      setPosts(doc.data());
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
