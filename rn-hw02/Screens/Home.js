@@ -1,5 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View } from "react-native";
+import { useDispatch } from "react-redux";
+import { logOutThunk } from "../redux/auth/authOperations";
 
 import PostsScreen from "./PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
@@ -14,6 +16,11 @@ import { Feather } from "@expo/vector-icons";
 const Tab = createBottomTabNavigator();
 
 function Home({ navigation }) {
+  const dispatch = useDispatch();
+
+  function hendelHeaderRight() {
+    dispatch(logOutThunk());
+  }
   return (
     <Tab.Navigator
       screenOptions={{
@@ -70,7 +77,7 @@ function Home({ navigation }) {
               size={24}
               color="#BDBDBD"
               style={{ paddingRight: 20 }}
-              onPress={() => navigation.navigate("LoginScreen")}
+              onPress={hendelHeaderRight}
             />
           ),
         }}

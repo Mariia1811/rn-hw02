@@ -4,6 +4,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   updateProfile,
+  signOut,
 } from "firebase/auth";
 import { auth } from "../../firebase/config";
 
@@ -29,7 +30,6 @@ export const registerThunk = createAsyncThunk(
         }
       }
       const { displayName, uid } = await auth.currentUser;
-      console.log("j", { displayName, uid });
       return { displayName, uid };
     } catch (error) {
       console.log("error", error);
@@ -47,8 +47,20 @@ export const loginThunk = createAsyncThunk(
         login: user.displayName,
         uid: user.uid,
       };
-      console.log("w", loginUser);
       return loginUser;
+    } catch (error) {
+      console.log("error", error);
+      console.log("error.message", error.message);
+    }
+  }
+);
+
+export const logOutThunk = createAsyncThunk(
+  "auth/logOut",
+  async (__i, thunkAPI) => {
+    try {
+      await signOut(auth);
+      return;
     } catch (error) {
       console.log("error", error);
       console.log("error.message", error.message);
@@ -58,21 +70,20 @@ export const loginThunk = createAsyncThunk(
 
 export const authStateCahngeUseThunk = createAsyncThunk(
   "auth/cahnge",
-  async ({ email, password }, thunkAPI) => {
+  async (__i, thunkAPI) => {
     try {
-      //  const authStateChanged = async (onChange = () => {}) => {
-      //    onAuthStateChanged((user) => {
-      //      onChange(user);
-      //    });
-      //  };
-
-      // const { user } = await signInWithEmailAndPassword(auth, email, password);
-      const loginUser = {
-        login: user.displayName,
-        uid: user.uid,
-      };
-      // console.log("w", loginUser);
-      // return loginUser;
+      await onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const loginUser = {
+            login: user?.displayName || null,
+            uid: user?.uid || null,
+            isUser: true || false,
+          };
+          return loginUser;
+        } else {
+          return;
+        }
+      });
     } catch (error) {
       console.log("error", error);
       console.log("error.message", error.message);

@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk, registerThunk } from "./authOperations";
+import {
+  authStateCahngeUseThunk,
+  logOutThunk,
+  loginThunk,
+  registerThunk,
+} from "./authOperations";
+import { current } from "@reduxjs/toolkit";
 
 const initialState = {
   login: null,
@@ -21,6 +27,18 @@ const authSlice = createSlice({
         state.userId = payload.uid;
         state.login = payload.login;
         state.isUser = true;
+      })
+      .addCase(authStateCahngeUseThunk.fulfilled, (state, { payload }) => {
+        if (payload) {
+          state.userId = payload?.uid;
+          state.login = payload?.login;
+          state.isUser = payload?.isUser;
+        }
+      })
+      .addCase(logOutThunk.fulfilled, (state, { payload }) => {
+        state.login = null;
+        state.userId = null;
+        state.isUser = false;
       });
   },
 });

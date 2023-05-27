@@ -19,7 +19,7 @@ const initialState = {
   password: "",
 };
 
-function LoginScreen ({ navigation }) {
+function LoginScreen({ navigation }) {
   const [state, setstate] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -55,7 +55,6 @@ function LoginScreen ({ navigation }) {
     keyboardHide();
     dispatch(loginThunk(state));
     setstate(initialState);
-    navigation.navigate("Home");
   };
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
@@ -135,7 +134,7 @@ function LoginScreen ({ navigation }) {
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
-};
+}
 
 export default LoginScreen;
 

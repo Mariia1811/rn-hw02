@@ -65,7 +65,6 @@ function RegistrationScreen({ navigation }) {
     keyboardHide();
     dispatch(registerThunk(state));
     setstate(initialState);
-    navigation.navigate("Home");
   };
 
   return (
