@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
 const reducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer,
+  reducer: authReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -34,17 +34,3 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
-
-// тут
-
-// import { configureStore, combineReducers } from "@reduxjs/toolkit";
-
-// import { authSlice } from "./auth/authReducer";
-
-// const rootReducer = combineReducers({
-//   [authSlice.name]: authSlice.reducer,
-// });
-
-// export const store = configureStore({
-//   reducer: rootReducer,
-// });

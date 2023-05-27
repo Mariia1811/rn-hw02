@@ -55,3 +55,27 @@ export const loginThunk = createAsyncThunk(
     }
   }
 );
+
+export const authStateCahngeUseThunk = createAsyncThunk(
+  "auth/cahnge",
+  async ({ email, password }, thunkAPI) => {
+    try {
+      //  const authStateChanged = async (onChange = () => {}) => {
+      //    onAuthStateChanged((user) => {
+      //      onChange(user);
+      //    });
+      //  };
+
+      // const { user } = await signInWithEmailAndPassword(auth, email, password);
+      const loginUser = {
+        login: user.displayName,
+        uid: user.uid,
+      };
+      // console.log("w", loginUser);
+      // return loginUser;
+    } catch (error) {
+      console.log("error", error);
+      console.log("error.message", error.message);
+    }
+  }
+);

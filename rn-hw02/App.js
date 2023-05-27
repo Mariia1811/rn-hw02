@@ -21,9 +21,9 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <MainRoute />
-      </PersistGate>
+      {/* <PersistGate persistor={persistor}> */}
+      <MainRoute />
+      {/* </PersistGate> */}
     </Provider>
   );
 }
