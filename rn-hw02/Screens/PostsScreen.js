@@ -15,7 +15,7 @@ import { db } from "../firebase/config.js";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 
-function PostsScreen({ route, navigation }) {
+function PostsScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
   const { login, email } = useSelector((state) => state.auth);
 
@@ -50,14 +50,20 @@ function PostsScreen({ route, navigation }) {
                 <View style={styles.itemInfo}>
                   <TouchableOpacity
                     style={styles.overlayIcons}
-                    onPress={() => navigation.navigate("CommentsScreen")}
+                    onPress={() => navigation.navigate("CommentsScreen", item)}
                   >
                     <FontAwesome name="comment-o" size={24} color="#BDBDBD" />
                     <Text style={styles.itemCount}>0</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.overlayIcons}
-                    onPress={() => navigation.navigate("MapScreen", item)}
+                    onPress={() =>
+                      navigation.navigate(
+                        "MapScreen",
+
+                        item
+                      )
+                    }
                   >
                     <Ionicons
                       name="md-location-outline"

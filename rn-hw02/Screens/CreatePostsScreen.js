@@ -67,20 +67,13 @@ function CreatePostsScreen({ navigation }) {
 
   const uploadPostToServer = async () => {
     const photo = await uploadPhotoToServer();
-    const docRef = await addDoc(collection(db, "myPosts"), {
+    await addDoc(collection(db, "myPosts"), {
       photo,
       data,
       location,
       userId,
       login,
     });
-    // await setDoc(doc(db, "myPosts", "MK"), {
-    //   photo,
-    //   data,
-    //   location,
-    //   userId,
-    //   login,
-    // });
   };
 
   const uploadPhotoToServer = async () => {

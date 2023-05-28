@@ -57,6 +57,18 @@ function MainRoute() {
             component={CommentsScreen}
             options={({ navigation }) => ({
               title: "Коментарі",
+              headerTitleAlign: "center",
+              headerStyle: {
+                backgroundColor: "#FFFFFF",
+                borderBottomColor: "0px 0.6px 0px rgba(0, 0, 0, 0.3)",
+                borderBottomWidth: 0.3,
+              },
+              headerTintColor: "#212121",
+              headerTitleStyle: {
+                fontFamily: "Roboto-Medium",
+                fontWeight: 500,
+                fontSize: 17,
+              },
               headerLeft: () => (
                 <AntDesign
                   name="arrowleft"
@@ -73,6 +85,18 @@ function MainRoute() {
             component={MapScreen}
             options={({ navigation }) => ({
               title: "Карта",
+              headerTitleAlign: "center",
+              headerStyle: {
+                backgroundColor: "#FFFFFF",
+                borderBottomColor: "0px 0.6px 0px rgba(0, 0, 0, 0.3)",
+                borderBottomWidth: 0.3,
+              },
+              headerTintColor: "#212121",
+              headerTitleStyle: {
+                fontFamily: "Roboto-Medium",
+                fontWeight: 500,
+                fontSize: 17,
+              },
               headerLeft: () => (
                 <AntDesign
                   name="arrowleft"
