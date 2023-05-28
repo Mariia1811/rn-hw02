@@ -14,7 +14,7 @@ import {
 
 import { storage, db } from "../firebase/config.js";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { setDoc, doc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -67,13 +67,20 @@ function CreatePostsScreen({ navigation }) {
 
   const uploadPostToServer = async () => {
     const photo = await uploadPhotoToServer();
-    await setDoc(doc(db, "myPosts", "MK"), {
+    const docRef = await addDoc(collection(db, "myPosts"), {
       photo,
       data,
       location,
       userId,
       login,
     });
+    // await setDoc(doc(db, "myPosts", "MK"), {
+    //   photo,
+    //   data,
+    //   location,
+    //   userId,
+    //   login,
+    // });
   };
 
   const uploadPhotoToServer = async () => {

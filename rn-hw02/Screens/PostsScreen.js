@@ -7,8 +7,9 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import { useSelector } from "react-redux";
 
-import { doc, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase/config.js";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -16,10 +17,11 @@ import { FontAwesome } from "@expo/vector-icons";
 
 function PostsScreen({ route, navigation }) {
   const [posts, setPosts] = useState([]);
+  const { login, email } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, "myPosts", "MK"), (doc) => {
-      setPosts(doc.data());
+    onSnapshot(collection(db, "myPosts"), (data) => {
+      setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
   }, []);
 
@@ -31,8 +33,8 @@ function PostsScreen({ route, navigation }) {
           source={require("../assets/ava.png")}
         />
         <View>
-          <Text style={styles.nameUser}>Natali Romanova</Text>
-          <Text>email@example.com</Text>
+          <Text style={styles.nameUser}>{login}</Text>
+          <Text>{email}</Text>
         </View>
       </View>
       <View>
@@ -44,7 +46,7 @@ function PostsScreen({ route, navigation }) {
             <View style={styles.item}>
               <Image source={{ uri: item.photo }} style={styles.itemImg} />
               <View style={styles.itemOverlay}>
-                <Text style={styles.itemTitle}>{item.name}</Text>
+                <Text style={styles.itemTitle}>{item.data.name}</Text>
                 <View style={styles.itemInfo}>
                   <TouchableOpacity
                     style={styles.overlayIcons}
@@ -55,16 +57,16 @@ function PostsScreen({ route, navigation }) {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.overlayIcons}
-                    onPress={() =>
-                      navigation.navigate("MapScreen", route.params)
-                    }
+                    onPress={() => navigation.navigate("MapScreen", item)}
                   >
                     <Ionicons
                       name="md-location-outline"
                       size={24}
                       color="#BDBDBD"
                     />
-                    <Text style={styles.itemPlace}>{item.locationTitle}</Text>
+                    <Text style={styles.itemPlace}>
+                      {item.data.locationTitle}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>

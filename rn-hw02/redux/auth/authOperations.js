@@ -29,8 +29,8 @@ export const registerThunk = createAsyncThunk(
           throw error;
         }
       }
-      const { displayName, uid } = await auth.currentUser;
-      return { displayName, uid };
+      const { displayName, uid, email } = await auth.currentUser;
+      return { displayName, uid, email };
     } catch (error) {
       console.log("error", error);
       console.log("error.message", error.message);
@@ -46,6 +46,7 @@ export const loginThunk = createAsyncThunk(
       const loginUser = {
         login: user.displayName,
         uid: user.uid,
+        email: user.email,
       };
       return loginUser;
     } catch (error) {
@@ -75,9 +76,10 @@ export const authStateCahngeUseThunk = createAsyncThunk(
       await onAuthStateChanged(auth, (user) => {
         if (user) {
           const loginUser = {
-            login: user?.displayName || null,
-            uid: user?.uid || null,
-            isUser: true || false,
+            login: user.displayName,
+            uid: user.uid,
+            email: user.email,
+            isUser: true,
           };
           return loginUser;
         } else {
